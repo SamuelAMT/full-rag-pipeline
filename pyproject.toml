@@ -1,0 +1,58 @@
+[tool.poetry]
+name = "full-rag-pipeline"
+version = "0.1.0"
+description = "LangGraph-powered RAG pipeline with LLaMA, ChromaDB, Prometheus and LangSmith"
+authors = ["Samuel Miranda <samuelmirandasamt@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "src" }]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+
+# LLM & Transformers
+llama-cpp-python = "^0.3.12"
+#transformers = "4.53.1"
+tokenizers = "0.21.2"
+huggingface_hub = "0.33.2"
+
+# LangChain & LangGraph
+langchain = "0.3.26"
+langgraph = "0.5.1"
+
+# Embedding
+InstructorEmbedding = "1.0.1"
+
+# Vector DB
+chromadb = "1.0.15"
+
+# Data Processing
+numpy = "^2.3.1"
+
+# Observability
+prometheus-client = "0.22.1"
+llm-guard = "0.3.16"
+langsmith = "0.4.4"
+
+# App Runtime
+fastapi = "0.116.0"
+uvicorn = "0.35.0"
+python-dotenv = "1.1.1"
+
+# Caching & Task Queue
+redis = "6.2.0"
+
+# Utility
+pydantic = "2.11.7"
+httpx = "0.28.1"
+
+# Dev, Linting, Typing, Testing
+ruff = "0.12.2"
+mypy = "1.16.1"
+pytest = "8.4.1"
+pytest-asyncio = "1.0.0"
+types-redis = "4.6.0.20241004"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
