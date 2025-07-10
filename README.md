@@ -1,4 +1,4 @@
-# Full RAG Pipeline Project
+# Full RAG Pipeline
 
 ## Project Overview
 A comprehensive RAG (Retrieval-Augmented Generation) pipeline built with LangGraph, featuring document processing, vector storage, retrieval, and generation with monitoring and safety measures.
@@ -6,8 +6,8 @@ A comprehensive RAG (Retrieval-Augmented Generation) pipeline built with LangGra
 ## Architecture
 ```
 User Query → Document Processing → Vector Storage → Retrieval → LLM Generation → Response
-     ↓              ↓                   ↓             ↓            ↓            ↓
-  FastAPI      Unstructured        FAISS/Postgres  LangGraph   OpenAI/Ollama  Monitoring
+     ↓              ↓                   ↓             ↓               ↓             ↓
+  FastAPI      Unstructured         ChromaDB      LangGraph         llama       Monitoring
 ```
 
 ## Project Structure
@@ -22,12 +22,6 @@ full-rag-pipeline/
 │   │   ├── main.tf
 │   │   ├── variables.tf
 │   │   └── outputs.tf
-│   ├── docker/
-│   │   ├── Dockerfile
-│   │   └── docker-compose.yml
-│   └── k8s/
-│       ├── deployment.yaml
-│       └── service.yaml
 ├── src/
 │   ├── core/
 │   │   ├── __init__.py
@@ -88,10 +82,6 @@ full-rag-pipeline/
 │   ├── setup_data.py
 │   ├── run_pipeline.py
 │   └── evaluate_model.py
-├── docs/
-│   ├── API.md
-│   ├── DEPLOYMENT.md
-│   └── ARCHITECTURE.md
 ├── .env.example
 ├── .gitignore
 ├── pyproject.toml
@@ -109,24 +99,21 @@ full-rag-pipeline/
 - **Pydantic**: Data validation and settings management
 
 ### LLM & Embeddings
-- **Primary**: Ollama (free, local deployment)
+- **Primary**: llama (free, local deployment)
 - **Alternative**: OpenAI GPT (with API key)
 - **Embeddings**: sentence-transformers (free) or OpenAI embeddings
 
 ### Vector Stores
-- **FAISS**: Local vector storage (free)
-- **PostgreSQL + pgvector**: Production vector database
-- **Backup**: Chroma (simple, free alternative)
+- **ChromaDB**: Local vector storage
 
 ### Document Processing
 - **Unstructured**: Document parsing and chunking
 - **PyPDF2**: PDF processing
-- **python-docx**: Word document processing
 
 ### Monitoring & Safety
 - **Prometheus + Grafana**: Metrics and monitoring (free)
 - **LangSmith**: LangChain monitoring (free tier)
-- **Custom Guardrails**: Content safety filters
+- **Guardrails**: Content safety filters
 
 ### Infrastructure
 - **Docker**: Containerization
@@ -170,9 +157,6 @@ full-rag-pipeline/
 ```bash
 # Install Poetry
 curl -sSL https://install.python-poetry.org | python3 -
-
-# Install Ollama (for local LLM)
-curl -fsSL https://ollama.com/install.sh | sh
 ```
 
 ### Setup
@@ -183,6 +167,9 @@ cd full-rag-pipeline
 
 # Install dependencies
 poetry install
+
+# Download and install llama model
+huggingface-cli download bartowski/Meta-Llama-3.1-8B-Instruct-GGUF --include "Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf" --local-dir ./models
 
 # Setup environment
 cp .env.example .env
@@ -216,12 +203,11 @@ curl -X POST "http://localhost:8000/query" \
 ## Environment Variables
 ```env
 # LLM Configuration
-OLLAMA_BASE_URL=http://localhost:11434
+LLAMA_BASE_URL=http://localhost:11434
 OPENAI_API_KEY=openai_key_here
 
 # Vector Store
-VECTOR_STORE_TYPE=faiss  # or postgres
-POSTGRES_URL=postgresql://user:password@localhost:5432/ragdb
+VECTOR_STORE_TYPE=chromadb
 
 # API Configuration
 API_HOST=0.0.0.0
