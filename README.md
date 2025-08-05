@@ -328,6 +328,6 @@ terraform apply
 MIT License - see LICENSE file for details.
 
 ## Support
-- Documentation: [docs/](docs/)
+- Documentation: [README](https://github.com/samuelamt/full-rag-pipeline/blob/main/README.md)
 - Issues: GitHub Issues
 - Discussions: GitHub Discussions
